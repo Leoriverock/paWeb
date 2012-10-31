@@ -56,9 +56,9 @@
     <div id="tray">
 
         <ul>
-            <li id="tray-active" ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
+            <li  ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
             <%if(session.getAttribute("username")!=null){ %><li><a href="monedero.jsp">Usuario</a></li><%}%>
-            <li><a href="VerCompeticiones.jsp">Competiciones</a></li>
+            <li id="tray-active"><a href="VerCompeticiones.jsp">Competiciones</a></li>
             <li><a href="VerPartidos.jsp">Partidos</a></li>
             <li class="pull-right"><a><div id="reloj">
                                 <script language="javascript">

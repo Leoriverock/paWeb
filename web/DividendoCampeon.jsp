@@ -144,6 +144,7 @@
             <h1>Aqui el usuario deberá elegir el equipo que cree saldrá campeón de esta competicion</h1>
             <table class="table table-bordered">
                 <%
+                if(session.getAttribute("username")!=null){ 
                 String id = request.getParameter("cod");
                 int ID = Integer.parseInt(id);
                 ManejadorBD mbd = ManejadorBD.getInstancia();
@@ -161,7 +162,7 @@
                 %>
             </table>
     </div>
-             <%
+             <% }
                         List lista = new ArrayList();
                         lista = ManejadorBD.getInstancia().ObtenerFechaHora();
 

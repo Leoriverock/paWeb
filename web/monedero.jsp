@@ -63,8 +63,8 @@
     <div id="tray">
 
         <ul>
-            <li id="tray-active" ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
-            <%if(session.getAttribute("username")!=null){ %><li><a href="monedero.jsp">Usuario</a></li><%}%>
+            <li  ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
+            <%if(session.getAttribute("username")!=null){ %><li id="tray-active"><a href="monedero.jsp">Usuario</a></li><%}%>
             <li><a href="VerCompeticiones.jsp">Competiciones</a></li>
             <li><a href="VerPartidos.jsp">Partidos</a></li>
             <li class="pull-right"><a><div id="reloj">
@@ -161,7 +161,7 @@
                              <tr>
                                  <td>Agregar $ </td>
                                  <td><input type="Text" name="agregar"></td>
-                                 <tr><td><input type="submit" value="Acreditar"></td>
+                                 <tr><td><input type="submit" class="btn btn-success" value="Acreditar"></td>
                              </tr>
                          </table>  
                        </fieldset>

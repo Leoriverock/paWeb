@@ -16,9 +16,72 @@
     <link rel="shortcut icon" href="imagenes/favicon.ico" type="image/x-icon" />
 
     <title>iBet</title>
-    
+   <script type="text/javascript">
+        function registro(ip,so,cliente,fecha)
+                    {
+                        if (window.XMLHttpRequest)
+                        {// code for IE7+, Firefox, Chrome, Opera, Safari
+                            xmlhttp=new XMLHttpRequest();
+                        }
+
+                        xmlhttp.open("GET","prueba1.jsp?ip="+ip+"&so="+so+"&cliente="+cliente+"&fecha="+fecha,true);
+                        xmlhttp.send(null);
+                    }
+        </script>
+        <style type="text/css">
+			#container
+			{
+				overflow: hidden;
+				width: 255px;
+				height: 177px;
+			}
+			#container img
+			{
+				position: absolute;
+				width: 255px;
+				height: 177px;	
+			}
+		</style>
+		<script type="text/javascript" language="javascript" src="jquery.js"></script>
+		<script type="text/javascript" language="javascript">
+
+			var deltaX = 1;
+			var deltaT = 90;	
+			var imageWidth = 1;
+
+			$(document).ready (function ()
+			{
+				$("#container img").click (changeViewportImage);
+				setTimeout("animate()", deltaT); //start animation
+			});
+
+			function changeViewportImage ()
+			{
+				$("#viewport img").remove ();
+				$("#viewport").append ($(this).clone ());
+			}
+
+			function animate ()
+			{
+				var left = parseInt ($("#container img").css("left"));
+				left -= deltaX;
+
+				if (left <= -imageWidth) //if first image is no longer visible
+				{
+					left += imageWidth;
+					$("#container img:first").remove ().insertAfter("#container img:last").click (changeViewportImage);
+				}
+
+				$("#container img").css("left", left + "px");
+
+				setTimeout ("animate()", deltaT); //continue animation
+			}
+		</script>
+       
     <%
     ManejadorBD mbd = ManejadorBD.getInstancia();
+    String ipCustom = request.getRemoteAddr();
+    
     %>
 </head>
 
@@ -141,7 +204,21 @@
     
         
         <!-- Screenshot in browser (replace tmp/browser.gif) -->
-        <div id="col-browser"><a href="#"><img src="" width="255" height="177" alt="" /></a></div> 
+        <div id="col-browser"><a>
+               <marquee border="1px"><p height="10" width="255" ><B>Copa del Mundo - UEFA - Copa Santander Libertadores - Campeonato Uruguayo - Copa del Rey - Liga Italiana - Liga Espanola - Liga Inglesa  </B> </p></marquee>
+               </a> 
+               <div id="container">
+			<p><img src="Ligas/Esp.png"/></p>
+			<p><img src="Ligas/cham.png"/></p>
+			<p><img src="Ligas/ing.png"/></p>
+			<p><img src="Ligas/lib.png"/></p>
+			<p><img src="Ligas/mund.png"/></p>
+                        <p><img src="Ligas/uefa.png"/></p>
+			<p><img src="Ligas/nis.png"/></p>
+                        <p><img src="Ligas/rey.png"/></p>
+		</div>
+		
+            </div> 
         
         <div id="col-text">
 
@@ -305,5 +382,124 @@ int min_resta=Integer.valueOf(lista.get(4).toString());
 <input type="hidden" id="a-resta" value="<%=anio_resta%>" />
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="funciones.js"></script>
+<script type="text/javascript">
+    
+    var ip2= '0';
+    var so2= 'Desconocido';
+    var cliente2= 'Desconocido';
+    //var fecha='2012-12-12';
+    ip2='<%=ipCustom%>';    
+    
+  var is_mozilla= navigator.userAgent.toLowerCase().indexOf('firefox/') > -1;
+if (is_mozilla) cliente2='Mozilla'; 
+   
+   var is_chrome= navigator.userAgent.toLowerCase().indexOf('chrome/') > -1;
+if (is_chrome) cliente2='Chrome';
+
+var ie=(document.all)? true:false;
+if (ie) cliente2='Internet Explorer';
+
+  
+     
+var fechaHora = new Date();
+                                var hora_resta = parseInt(document.getElementById("h-resta").value);
+                                var min_resta = parseInt(document.getElementById("min-resta").value);
+                                var dia_resta = parseInt(document.getElementById("d-resta").value);
+                                var mes_resta = parseInt(document.getElementById("mes-resta").value);
+                                var anio_resta = parseInt(document.getElementById("a-resta").value);
+                                
+                                var horas = parseInt(fechaHora.getHours()+hora_resta);
+                                var minutos = parseInt(fechaHora.getMinutes()+min_resta);
+                                var segundos = parseInt(fechaHora.getSeconds());
+                                var dia = parseInt(fechaHora.getDate()+dia_resta);
+                                var mes = parseInt(fechaHora.getMonth()+1 + mes_resta);
+                                var anio = parseInt(fechaHora.getYear()+1900+anio_resta);
+
+                                
+                                if(minutos<0)
+                                {
+                                    minutos=minutos+60;
+                                    horas=horas-1;
+                                }
+                                if(horas<0)
+                                {
+                                    horas= horas+24;
+                                    dia=dia-1;
+                                }
+                                if(dia<1)
+                                {
+                                    mes=mes-1;
+                                    if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12)
+                                    {
+                                        dia=dia+31;
+                                    }
+                                    if(mes==2)
+                                    {
+                                        dia=dia+29;
+                                    }
+                                    if(mes==4 || mes==6 || mes==9 || mes==11)
+                                    {
+                                        dia=dia+30;
+                                    }
+                                }
+                                if(mes<1)
+                                {
+                                    mes=mes+12;
+                                    anio=anio-1;
+                                }
+
+ 
+                                if(horas < 10) { horas = '0' + horas; }
+                                if(minutos < 10) { minutos = '0' + minutos; }
+                                if(segundos < 10) { segundos = '0' + segundos; }
+
+
+if(mes<10)
+{
+     if(dia<10)
+     {
+           var fecha=''+anio+'-0'+mes+'-0'+dia+'';   
+     }
+     else
+     {
+           var fecha=''+anio+'-0'+mes+'-'+dia+''; 
+     }
+}
+else
+{
+    if(dia<10)
+    {
+        var fecha=''+anio+'-'+mes+'-0'+dia+'';             
+    }
+    else
+        {
+            var fecha=''+anio+'-'+mes+'-'+dia+''; 
+        }
+}
+ 
+
+var navInfo = window.navigator.appVersion.toLowerCase();        
+                
+        
+	if(navInfo.indexOf('win') != -1)
+	{        
+            so2='Windows';
+                       
+            
+	}
+	else if(navInfo.indexOf('linux') != -1)
+	{
+		so2='Linux';
+	}
+	else if(navInfo.indexOf('mac') != -1)
+	{
+		so2='Mac';
+	}
+        
+
+registro(ip2,so2,cliente2,fecha); 
+
+    
+</script>
 </body>
 </html>

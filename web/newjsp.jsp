@@ -23,16 +23,16 @@
             if(!user.equals("")){
             if(res.next()){
                %>
-               <h5>No disponible</h5>
+               <h5><span class="label label-important">No Disponible</span></h5>
                <%
             } else {
                %>
-               <h5>Disponible</h5>
+               <h5><span class="label label-success">Disponible</span></h5>
                <% 
             }
                        } else {
                            %>
-               <h5>Ingrese nick</h5>
+               <h5><span class="label label-info">Ingrese nick</span></h5>
                <% 
                        }
                 

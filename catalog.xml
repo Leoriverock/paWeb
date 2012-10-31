@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8084/ConexionBDWS/Conexion?wsdl" uri="src/conf/xml-resources/web-service-references/Conexion/wsdl/localhost_8084/ConexionBDWS/Conexion.wsdl"/>
+    <system systemId="http://localhost:8084/ConexionBDWS/Conexion?xsd=1" uri="src/conf/xml-resources/web-service-references/Conexion/wsdl/localhost_8084/ConexionBDWS/Conexion.xsd_1.xsd"/>
+</catalog>

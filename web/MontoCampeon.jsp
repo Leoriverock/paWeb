@@ -4,92 +4,71 @@
     Author     : Usaurio
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.sql.SQLException"%>
-<%@page import="Clases.ManejadorBD"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page language="java" import="Clases.*, java.lang.*"%>
+<%@page import="Clases.ManejadorBD"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Ibet</title>
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <link href="Estilo.css" rel="stylesheet">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/Estilo.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" media="print" type="text/css" href="css/print.css" />
+    <link rel="shortcut icon" href="imagenes/favicon.ico" type="image/x-icon" />
+
+    <title>iBet</title>
     </head>
-    <body>
-        <%if(session.getAttribute("username")==null){
-           %>
-            <script>alert("Debe iniciar sesion primero");
-            window.location.href='index.jsp';</script>
-         <%}%> 
-        <div class="navbar navbar-fixed-top">
-			
-			<!--Barra de Menu-->	
-				<div class="navbar-inner">
-					<div class="container">
-						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</a>
-					<a class="brand">Apuesta</a>
-					<div class="nav-collapse">
-				<ul class="nav">
-					<li class="active"><a href="index.jsp"><i class="icon-home icon-white"></i>Inicio</a></li>
-					  <li><a href="Perfil_Usuario.jsp">Usuario</a></li>
-					  <li><a href="Competiciones.jsp">Competiciones</a></li>
-					  <li><a href="#">Partidos</a></li>
-                                          <li class="dropdown" id="menu1">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
-                                              Apuestas
-                                              <b class="caret"></b>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                              <li><a href="ListaPartidos.jsp">Resultado de Partido</a></li>
-                                              <li><a href="ListaLigas.jsp">Campeón de Liga</a></li>
-                                            </ul>
-                                          </li>
-                                 </ul>
-                                <%if(session.getAttribute("username")!=null){ %>
-                                <ul class="nav pull-right">
-                                    <li><a>Bienvenido: <%out.print(session.getAttribute("username")); %></a></li>
-                                    <li><a href="Perfil_Usuario.jsp">Editar Perfil</a></li>
-                                    <li><a href="Logout.jsp">Cerrar Sesion</a></li>
-                                </ul>
-                                <%}%>  
-				<% if(session.getAttribute("username")==null){%> 
-                                <ul class="nav pull-right">
-				  <li><a href="Registro_Usuario.jsp">Registrarse</a></li>
-					<li class="divider-vertical"></li>
-					<li class="dropdown">
-					<a class="dropdown-toggle" href="#" data-toggle="dropdown">Iniciar Sesion <strong class="caret"></strong></a>
-					<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-					  <form action="Login.jsp" method="POST">
-						  <label>Usuario:</label><input type="Text" name="nombre_usuario">
-						  <label>Contraseña:</label><input type="Password" name="pass_usuario">
-						  <input type="submit" class="btn" value="Ingresar">
-					<a href="#">Olvidaste la contraseña?</a>
-                                        </form>
-				</div> <% } %>
-				
-                               </div>
-			</div>
-		  </div>
-		</div>
-      <!--Contenedor-->                          
-      <div class="container-fluid">
-        <div class="row-fluid">
-            <!--Menu Costado-->
-            <div class="span2">
-               <div class="costado">
-                <table class="table table-bordered">   
-                <tr><td><a href =VerDetalleEquipos.jsp>VerDetalleEquipos</a></td></tr>
-                <tr><td><a href =DetalleJugadores.jsp>VerDetalleJugadores</a></td></tr>
-                <tr><td><a href =monedero.jsp>Monedero</a></td></tr>
-                <tr><td><div id="reloj">
+    
+<body>
+    <% if(session.getAttribute("username")==null){ %>
+    <div class="alert alert-error">
+        <span>Error: </span>debe autenticarse primero.
+    </div>
+   <% }%>
+<div id="main">
+
+    <!-- Header -->
+    <div id="header">
+
+        <h1 id="logo"><a href="index.jsp" title="ibet apuestas deportivas"><img src="imagenes/logo.png" alt="" /></a></h1>
+        <hr class="noscreen" />
+
+        <!-- Navigation -->
+        <div id="nav">
+            <a id="nav-active" href="index.jsp">Inicio</a> <span>|</span>
+            <a href="#">Acerca de iBet</a> <span>|</span>
+            <a href="#">Soporte</a> <span>|</span>
+            <a href="#">Contacto</a> <span>|</span>
+              <%if(session.getAttribute("username")!=null){ %>
+                                <div class="pull-right">
+                                     <a id="nav-active" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                     Bienvenido: <%out.print(session.getAttribute("username")); %></a>
+                                     <ul class="dropdown-menu">
+                                         <li><a href="Perfil_Usuario.jsp">Editar Perfil</a></li> 
+                                         <li><a href="Logout.jsp">Cerrar Sesion</a></li>
+                                     </ul>
+                                </div>
+                                <%}%>   
+            
+        </div> <!-- /nav -->
+       
+    </div> <!-- /header -->
+    
+    <!-- Tray -->
+    <div id="tray">
+
+        <ul>
+            <li id="tray-active" ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
+            <%if(session.getAttribute("username")!=null){ %><li><a href="monedero.jsp">Usuario</a></li><%}%>
+            <li><a href="VerCompeticiones.jsp">Competiciones</a></li>
+            <li><a href="VerPartidos.jsp">Partidos</a></li>
+            <li class="pull-right"><a><div id="reloj">
                                 <script language="javascript">
                                 function muestraReloj() {
                                 var fechaHora = new Date();
@@ -144,25 +123,28 @@
                                 if(minutos < 10) { minutos = '0' + minutos; }
                                 if(segundos < 10) { segundos = '0' + segundos; }
                                 
-                                document.getElementById("reloj").innerHTML = '<font size="2" face="Arial"><B>' + horas+':'+minutos+':'+segundos+"\n "+dia+"/"+mes+"/"+anio;
+                                document.getElementById("reloj").innerHTML = '<font size="2" face="sans-serif">'+horas+':'+minutos+':'+segundos+"\n"+dia+"/"+mes+"/"+anio;
                                 }
 
                                 window.onload = function() {
                                   setInterval(muestraReloj, 1000);
                                 } 
                                 </script>
-                                </div>
-                    </td></tr>
-                </table>
-               </div>
-               </div>
-            <!--Fin Menu Costado-->
-            <!--Contenido-->    
-            <div class="span10">
-                    <div class="centro">
-                         <form action="apostar.jsp" method="POST">
+                                </div></a></li>                    
+            <!--
+            <li><a href="#">Equipos</a></li>
+            <li><a href="#">Jugadores</a></li>
+            -->
+        </ul>
+
+    <hr class="noscreen" />
+    
+    </div> <!-- /tray -->
+    <div id="col" class="box">
+        <form  action="apostar.jsp" method="POST">
                             <table>
-                            <%
+                                <% 
+                                if(session.getAttribute("username")!=null) {
                             String ide = request.getParameter("ideq");
                             int id_e = Integer.parseInt(ide);
                             String idc = request.getParameter("idcomp");
@@ -170,7 +152,7 @@
                             ManejadorBD mbd= ManejadorBD.getInstancia();
                             double divide=4.0;
                             try{
-                                            out.println("<h3>hola</h3>");
+                                            
 
                             ResultSet res= mbd.getStatement().executeQuery("select * from liga_equipo, equipos where id_liga="+id_c+" and id_equipo="+id_e+" and id_equipo=id_equipos");
 
@@ -182,10 +164,13 @@
 
                         %>
                                 <input type="Text" name="monto">
-                                </td><td>
-                                <input type="submit" class="btn" value="Ingresar">
+                                </td><br/>
+                                <tr></tr>
+                                <td>
+                                <input type="submit" class="btn btn-success" value="Ingresar">
+                                </td>
                                 <%
-                                out.println("</td></tr>");
+                                
                             }
                                    } catch (SQLException e){
                                        out.println("error"+e.toString());
@@ -197,14 +182,9 @@
                             <input type="hidden" id="equipo" value="<%=id_e%>"  name="eq"/>
                             <input type="hidden" id="divi" value="<%=divide%>"  name="dvd"/>
                             </form>
-                        
-                  </div>                           
-                 </div> 
-            </div>
-          </div>
-         <!--Contenido-->
-      
-                        <%
+            
+    </div>
+             <% }
                         List lista = new ArrayList();
                         lista = ManejadorBD.getInstancia().ObtenerFechaHora();
 
@@ -222,6 +202,5 @@
         <input type="hidden" id="a-resta" value="<%=anio_resta%>" />
         <script src="http://code.jquery.com/jquery-latest.js"></script>
 			<script src="funciones.js"></script>
-       
-    </body>
+      </body>
 </html>

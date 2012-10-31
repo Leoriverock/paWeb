@@ -167,8 +167,7 @@
 
                                         <tr >
                                         <td>Nombre de Login:</td>
-                                        <td><input  class="inputNormal" type="text"  name="login_usuario" id="login_usuario">
-                                        <div id="resultau">         </div>
+                                        <td><input  class="inputNormal" type="text"  name="login_usuario" id="login_usuario" onkeyup="verificar(login_usuario.value)"><td><div id="resultau"></div></td>
                                         </tr> 
 
                                         <tr >
@@ -183,12 +182,12 @@
                                         </tr>
                                         <tr >
                                         <td>Contraseña:</td>
-                                        <td><input  class="inputNormal" type="text" name="contrasenia_usuario" id="contrasenia_usuario">
+                                        <td><input  class="inputNormal" type="password" name="contrasenia_usuario" id="contrasenia_usuario">
                                         </tr>
 
                                         <tr>
                                             <td>Repetir Contraseña:</td>
-                                            <td><input type="text" class="inputNormal" name="r_contrasenia_usuario" id="r_contrasenia_usuario"  >
+                                            <td><input type="password" class="inputNormal" name="r_contrasenia_usuario" id="r_contrasenia_usuario"  >
                                         </tr>
                                         <td>Telefono:</td>
                                         <td><input  class="inputNormal" type="text"  name="tel_usuario" id="tel_usuario">

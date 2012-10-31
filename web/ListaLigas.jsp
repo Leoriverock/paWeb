@@ -4,10 +4,11 @@
     Author     : Usaurio
 --%>
 
-<%@page import="java.util.List"%>
+	<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="Clases.ManejadorBD"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
+<%@page import="Clases.ManejadorBD"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,23 +17,36 @@
 
     <link rel="stylesheet" media="screen,projection" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" media="screen,projection" type="text/css" href="css/main.css" />
-    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/Estilo.css" />
     <link rel="stylesheet" media="screen,projection" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="css/Estilo.css" />
     <link rel="stylesheet" media="print" type="text/css" href="css/print.css" />
     <link rel="shortcut icon" href="imagenes/favicon.ico" type="image/x-icon" />
 
     <title>iBet</title>
-    </head>
-    
-<body>
-    <% if(session.getAttribute("username")==null){ %>
-    <div class="alert alert-error">
-        <span>Error: </span>debe autenticarse primero.
-    </div>
-   <% }%>
-<div id="main">
+   <script type="text/javascript">
+        function registro(ip,so,cliente,fecha)
+                    {
+                        if (window.XMLHttpRequest)
+                        {// code for IE7+, Firefox, Chrome, Opera, Safari
+                            xmlhttp=new XMLHttpRequest();
+                        }
 
-    <!-- Header -->
+                        xmlhttp.open("GET","prueba1.jsp?ip="+ip+"&so="+so+"&cliente="+cliente+"&fecha="+fecha,true);
+                        xmlhttp.send(null);
+                    }
+        </script>
+    <%
+    ManejadorBD mbd = ManejadorBD.getInstancia();
+    String ipCustom = request.getRemoteAddr();
+    
+    %>
+</head>
+
+<body>
+     
+<div id="main">
+    
+      <!-- Header -->
     <div id="header">
 
         <h1 id="logo"><a href="index.jsp" title="ibet apuestas deportivas"><img src="imagenes/logo.png" alt="" /></a></h1>
@@ -135,19 +149,22 @@
             <li><a href="#">Jugadores</a></li>
             -->
         </ul>
-
+       
+            
+ 
     <hr class="noscreen" />
-    
     </div> <!-- /tray -->
+
+    <!-- Promo -->
+    <div id="col-top"></div>
     <div id="col" class="box">
-   
-            <h3>Aqui usted podrá apostar por quién será el campeón de esta liga...</h3>
+    
+ <h3>Aqui usted podrá apostar por quién será el campeón de esta liga...</h3>
                          <form method="POST" action="DividendoCampeon.jsp.jsp">
                             <h4></h4>    
                                 <table class="table table-bordered">
                                 <%
                                 //tabla con links a detalle de jugador
-                                ManejadorBD mbd= ManejadorBD.getInstancia();
 
                                 try{
                                     ResultSet liga= mbd.getStatement().executeQuery("select * from competiciones where tipo='Liga'");
@@ -162,24 +179,144 @@
                                 %>
                             </table>
                          </form>
-    </div>
-         <%
-                        List lista = new ArrayList();
-                        lista = ManejadorBD.getInstancia().ObtenerFechaHora();
+	
+	
+	</div> <!-- /main -->
+			<% 
+			List lista = new ArrayList();
+			lista = ManejadorBD.getInstancia().ObtenerFechaHora();
 
-                        int dia_resta=Integer.valueOf(lista.get(0).toString());
-                        int mes_resta=Integer.valueOf(lista.get(1).toString());
-                        int anio_resta=Integer.valueOf(lista.get(2).toString());
-                        int hora_resta=Integer.valueOf(lista.get(3).toString());
-                        int min_resta=Integer.valueOf(lista.get(4).toString());
-
-                        %>    
-        <input type="hidden" id="h-resta" value="<%=hora_resta%>" />
-        <input type="hidden" id="min-resta" value="<%=min_resta%>" />
-        <input type="hidden" id="d-resta" value="<%=dia_resta%>" />
-        <input type="hidden" id="mes-resta" value="<%=mes_resta%>" />
-        <input type="hidden" id="a-resta" value="<%=anio_resta%>" />
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+			int dia_resta=Integer.valueOf(lista.get(0).toString());
+			int mes_resta=Integer.valueOf(lista.get(1).toString());
+			int anio_resta=Integer.valueOf(lista.get(2).toString());
+			int hora_resta=Integer.valueOf(lista.get(3).toString());
+			int min_resta=Integer.valueOf(lista.get(4).toString());
+			 %>    
+			<input type="hidden" id="h-resta" value="<%=hora_resta%>" />
+			<input type="hidden" id="min-resta" value="<%=min_resta%>" />
+			<input type="hidden" id="d-resta" value="<%=dia_resta%>" />
+			<input type="hidden" id="mes-resta" value="<%=mes_resta%>" />
+			<input type="hidden" id="a-resta" value="<%=anio_resta%>" />
+			<script src="http://code.jquery.com/jquery-latest.js"></script>
 			<script src="funciones.js"></script>
-    </body>
+			<script type="text/javascript">
+		
+		var ip2= '0';
+		var so2= 'Desconocido';
+		var cliente2= 'Desconocido';
+		//var fecha='2012-12-12';
+		ip2='<%=ipCustom%>';    
+		
+	  var is_mozilla= navigator.userAgent.toLowerCase().indexOf('firefox/') > -1;
+	if (is_mozilla) cliente2='Mozilla'; 
+	   
+	   var is_chrome= navigator.userAgent.toLowerCase().indexOf('chrome/') > -1;
+	if (is_chrome) cliente2='Chrome';
+
+	var ie=(document.all)? true:false;
+	if (ie) cliente2='Internet Explorer';
+
+	  
+		 
+	var fechaHora = new Date();
+									var hora_resta = parseInt(document.getElementById("h-resta").value);
+									var min_resta = parseInt(document.getElementById("min-resta").value);
+									var dia_resta = parseInt(document.getElementById("d-resta").value);
+									var mes_resta = parseInt(document.getElementById("mes-resta").value);
+									var anio_resta = parseInt(document.getElementById("a-resta").value);
+									
+									var horas = parseInt(fechaHora.getHours()+hora_resta);
+									var minutos = parseInt(fechaHora.getMinutes()+min_resta);
+									var segundos = parseInt(fechaHora.getSeconds());
+									var dia = parseInt(fechaHora.getDate()+dia_resta);
+									var mes = parseInt(fechaHora.getMonth()+1 + mes_resta);
+									var anio = parseInt(fechaHora.getYear()+1900+anio_resta);
+
+									
+									if(minutos<0)
+									{
+										minutos=minutos+60;
+										horas=horas-1;
+									}
+									if(horas<0)
+									{
+										horas= horas+24;
+										dia=dia-1;
+									}
+									if(dia<1)
+									{
+										mes=mes-1;
+										if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12)
+										{
+											dia=dia+31;
+										}
+										if(mes==2)
+										{
+											dia=dia+29;
+										}
+										if(mes==4 || mes==6 || mes==9 || mes==11)
+										{
+											dia=dia+30;
+                                    }
+                                }
+                                if(mes<1)
+                                {
+                                    mes=mes+12;
+                                    anio=anio-1;
+                                }
+
+ 
+                                if(horas < 10) { horas = '0' + horas; }
+                                if(minutos < 10) { minutos = '0' + minutos; }
+                                if(segundos < 10) { segundos = '0' + segundos; }
+
+
+if(mes<10)
+{
+     if(dia<10)
+     {
+           var fecha=''+anio+'-0'+mes+'-0'+dia+'';   
+     }
+     else
+     {
+           var fecha=''+anio+'-0'+mes+'-'+dia+''; 
+     }
+}
+else
+{
+    if(dia<10)
+    {
+        var fecha=''+anio+'-'+mes+'-0'+dia+'';             
+    }
+    else
+        {
+            var fecha=''+anio+'-'+mes+'-'+dia+''; 
+        }
+}
+ 
+
+var navInfo = window.navigator.appVersion.toLowerCase();        
+                
+        
+	if(navInfo.indexOf('win') != -1)
+	{        
+            so2='Windows';
+                       
+            
+	}
+	else if(navInfo.indexOf('linux') != -1)
+	{
+		so2='Linux';
+	}
+	else if(navInfo.indexOf('mac') != -1)
+	{
+		so2='Mac';
+	}
+        
+
+registro(ip2,so2,cliente2,fecha); 
+
+    
+</script>
+</body>
 </html>

@@ -1,8 +1,12 @@
+<%-- 
+    Document   : apuesta
+    Created on : 09-oct-2012, 4:12:17
+    Author     : Usaurio
+--%>
 <%@page import="java.util.List"%>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.ArrayList"%>
-<%@page language="java" import="Clases.*, java.lang.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="Clases.ManejadorBD"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,14 +21,34 @@
     <link rel="shortcut icon" href="imagenes/favicon.ico" type="image/x-icon" />
 
     <title>iBet</title>
-    </head>
-    
-<body>
+   <script type="text/javascript">
+        function registro(ip,so,cliente,fecha)
+                    {
+                        if (window.XMLHttpRequest)
+                        {// code for IE7+, Firefox, Chrome, Opera, Safari
+                            xmlhttp=new XMLHttpRequest();
+                        }
 
+                        xmlhttp.open("GET","prueba1.jsp?ip="+ip+"&so="+so+"&cliente="+cliente+"&fecha="+fecha,true);
+                        xmlhttp.send(null);
+                    }
+        </script>
+    <%
+    ManejadorBD mbd = ManejadorBD.getInstancia();
+    String ipCustom = request.getRemoteAddr();
+    
+    %>
+</head>
+
+<body>
+      <% if(session.getAttribute("username")==null){ %>
+    <div class="alert alert-error">
+        <span>Error: </span>debe autenticarse primero.
+    </div>
+   <% }%>
 <div id="main">
     
-             
-    <!-- Header -->
+      <!-- Header -->
     <div id="header">
 
         <h1 id="logo"><a href="index.jsp" title="ibet apuestas deportivas"><img src="imagenes/logo.png" alt="" /></a></h1>
@@ -35,8 +59,8 @@
             <a id="nav-active" href="index.jsp">Inicio</a> <span>|</span>
             <a href="#">Acerca de iBet</a> <span>|</span>
             <a href="#">Soporte</a> <span>|</span>
-            <a href="#">Contacto</a><span>|</span>
-            <%if(session.getAttribute("username")!=null){ %>
+            <a href="#">Contacto</a> <span>|</span>
+              <%if(session.getAttribute("username")!=null){ %>
                                 <div class="pull-right">
                                      <a id="nav-active" class="dropdown-toggle" data-toggle="dropdown" href="#">
                                      Bienvenido: <%out.print(session.getAttribute("username")); %></a>
@@ -45,8 +69,7 @@
                                          <li><a href="Logout.jsp">Cerrar Sesion</a></li>
                                      </ul>
                                 </div>
-                                <%}%>
-                
+                                <%}%>   
             
         </div> <!-- /nav -->
        
@@ -131,79 +154,178 @@
        
             
  
-    
-        <hr class="noscreen" />
-        </div> <!-- /tray -->
+    <hr class="noscreen" />
+    </div> <!-- /tray -->
+
+    <!-- Promo -->
+    <div id="col-top"></div>
     <div id="col" class="box">
-             <table class="table table-bordered">
+    <% if(session.getAttribute("username")!=null){
+            String apuesta= request.getParameter("plata");
+            int monto=Integer.parseInt(apuesta);
+
+            String id_partido= request.getParameter("id_p");
+            String gl= request.getParameter("goles_local");
+            String gv= request.getParameter("goles_visita");
+            
+            ResultSet partido= mbd.getStatement().executeQuery("select * from competiciones c, equipos el,"+
+                    "equipos ev, partidos p where finalizado=0 and p.id_comp=c.id_competicion and el.id_equipos=p.equipolocal"+
+                    " and ev.id_equipos=p.equipovisita and p.id_partido="+id_partido+"");
+            partido.next();
+            
+        %>
+        <h3>Esta apostando al partido <%out.println(partido.getObject("el.nombre")+"  vs  "+partido.getObject("ev.nombre"));%></h3>
+       <div class="well">
+        <%
+            
+                out.println("Apuesta A Local</br>Dinero apostado: $"+monto+"</br>Paga: "+partido.getObject("p.div_exacto"));
+                out.println("</br>En caso de acertar usted ganaría $"+monto*partido.getDouble("p.div_exacto"));
+        %>
+        <form action="ApuestaResultadoExacto.jsp" method="post">
+            <input type="hidden" name="partido" value="<%=id_partido%>" />
+            <input type="hidden" name="monto" value="<%=monto%>" />
+            <input type="hidden" name="gl" value="<%=gl%>" />
+            <input type="hidden" name="gv" value="<%=gv%>" />
+            <br/>
+            <input type="submit" class="btn btn-success" value="Aceptar">
+        </form> <%}%>
+        </div>
+</div> <!-- /main -->
+<%
+List lista = new ArrayList();
+lista = ManejadorBD.getInstancia().ObtenerFechaHora();
+
+int dia_resta=Integer.valueOf(lista.get(0).toString());
+int mes_resta=Integer.valueOf(lista.get(1).toString());
+int anio_resta=Integer.valueOf(lista.get(2).toString());
+int hora_resta=Integer.valueOf(lista.get(3).toString());
+int min_resta=Integer.valueOf(lista.get(4).toString());
+ %>    
+<input type="hidden" id="h-resta" value="<%=hora_resta%>" />
+<input type="hidden" id="min-resta" value="<%=min_resta%>" />
+<input type="hidden" id="d-resta" value="<%=dia_resta%>" />
+<input type="hidden" id="mes-resta" value="<%=mes_resta%>" />
+<input type="hidden" id="a-resta" value="<%=anio_resta%>" />
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="funciones.js"></script>
+<script type="text/javascript">
+    
+    var ip2= '0';
+    var so2= 'Desconocido';
+    var cliente2= 'Desconocido';
+    //var fecha='2012-12-12';
+    ip2='<%=ipCustom%>';    
+    
+  var is_mozilla= navigator.userAgent.toLowerCase().indexOf('firefox/') > -1;
+if (is_mozilla) cliente2='Mozilla'; 
+   
+   var is_chrome= navigator.userAgent.toLowerCase().indexOf('chrome/') > -1;
+if (is_chrome) cliente2='Chrome';
+
+var ie=(document.all)? true:false;
+if (ie) cliente2='Internet Explorer';
+
+  
+     
+var fechaHora = new Date();
+                                var hora_resta = parseInt(document.getElementById("h-resta").value);
+                                var min_resta = parseInt(document.getElementById("min-resta").value);
+                                var dia_resta = parseInt(document.getElementById("d-resta").value);
+                                var mes_resta = parseInt(document.getElementById("mes-resta").value);
+                                var anio_resta = parseInt(document.getElementById("a-resta").value);
+                                
+                                var horas = parseInt(fechaHora.getHours()+hora_resta);
+                                var minutos = parseInt(fechaHora.getMinutes()+min_resta);
+                                var segundos = parseInt(fechaHora.getSeconds());
+                                var dia = parseInt(fechaHora.getDate()+dia_resta);
+                                var mes = parseInt(fechaHora.getMonth()+1 + mes_resta);
+                                var anio = parseInt(fechaHora.getYear()+1900+anio_resta);
+
+                                
+                                if(minutos<0)
+                                {
+                                    minutos=minutos+60;
+                                    horas=horas-1;
+                                }
+                                if(horas<0)
+                                {
+                                    horas= horas+24;
+                                    dia=dia-1;
+                                }
+                                if(dia<1)
+                                {
+                                    mes=mes-1;
+                                    if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12)
+                                    {
+                                        dia=dia+31;
+                                    }
+                                    if(mes==2)
+                                    {
+                                        dia=dia+29;
+                                    }
+                                    if(mes==4 || mes==6 || mes==9 || mes==11)
+                                    {
+                                        dia=dia+30;
+                                    }
+                                }
+                                if(mes<1)
+                                {
+                                    mes=mes+12;
+                                    anio=anio-1;
+                                }
+
+ 
+                                if(horas < 10) { horas = '0' + horas; }
+                                if(minutos < 10) { minutos = '0' + minutos; }
+                                if(segundos < 10) { segundos = '0' + segundos; }
+
+
+if(mes<10)
+{
+     if(dia<10)
+     {
+           var fecha=''+anio+'-0'+mes+'-0'+dia+'';   
+     }
+     else
+     {
+           var fecha=''+anio+'-0'+mes+'-'+dia+''; 
+     }
+}
+else
+{
+    if(dia<10)
+    {
+        var fecha=''+anio+'-'+mes+'-0'+dia+'';             
+    }
+    else
+        {
+            var fecha=''+anio+'-'+mes+'-'+dia+''; 
+        }
+}
+ 
+
+var navInfo = window.navigator.appVersion.toLowerCase();        
                 
-                        <%
-                        out.println("<h2>Detalle del jugador</h2>");
-                        String id = request.getParameter("cod");
-                        int ID = Integer.parseInt(id);
-                        String div = request.getParameter("div");
-                        double dividendo = Double.parseDouble(div);
-                        String id_c= request.getParameter("id_comp");
-                        int id_comp= Integer.parseInt(id_c);
-                        
-                        ManejadorBD mbd = ManejadorBD.getInstancia();
-                        ResultSet eq = mbd.getStatement().executeQuery("select * from jugadores j, equipos e, jugadores_equipos je where id_jugador="+ID+" and jugador="+ID+" and id_equipos=equipo");
-                        eq.next();
-                            out.println("<tr>");
-                            out.println("<td>Nombre: "+eq.getObject("j.nombre") +"</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Equipo: "+eq.getObject("e.nombre")+"</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Nombre completo: "+eq.getObject("nombrecompleto") +"</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Nacionalidad: "+eq.getObject("nacionalidad") +"</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Posicion: "+eq.getObject("posicion")+"</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Altura: "+eq.getObject("altura") +" m</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Peso: "+eq.getObject("peso") +" kg</td>");
-                            out.println("</tr>");
-                            out.println("<tr>");
-                            out.println("<td>Dividendo Goleador: "+dividendo+"</td>");
-                            out.println("</tr>");
+        
+	if(navInfo.indexOf('win') != -1)
+	{        
+            so2='Windows';
+                       
+            
+	}
+	else if(navInfo.indexOf('linux') != -1)
+	{
+		so2='Linux';
+	}
+	else if(navInfo.indexOf('mac') != -1)
+	{
+		so2='Mac';
+	}
+        
 
-                        %>
-                </table>
-                </br>
-                <form class="form-search" action="ApuestaGoleador.jsp">
-                    <input type="hidden" value="<%=ID%>" name="id_j">
-                    <input type="hidden" value="<%=div%>" name="div">
-                    <input type="hidden" value="<%=id_comp%>" name="id_c">
-                    <label class="checkbox">$U</label>
-                    <input type="text" class="input-mini" name="monto">
-                    <input type="submit" class="btn" value="Apostar A Goleador">
-                </form>
-    </div>
-    <%
-                        List lista = new ArrayList();
-                        lista = ManejadorBD.getInstancia().ObtenerFechaHora();
+registro(ip2,so2,cliente2,fecha); 
 
-                        int dia_resta=Integer.valueOf(lista.get(0).toString());
-                        int mes_resta=Integer.valueOf(lista.get(1).toString());
-                        int anio_resta=Integer.valueOf(lista.get(2).toString());
-                        int hora_resta=Integer.valueOf(lista.get(3).toString());
-                        int min_resta=Integer.valueOf(lista.get(4).toString());
-
-                        %>    
-        <input type="hidden" id="h-resta" value="<%=hora_resta%>" />
-        <input type="hidden" id="min-resta" value="<%=min_resta%>" />
-        <input type="hidden" id="d-resta" value="<%=dia_resta%>" />
-        <input type="hidden" id="mes-resta" value="<%=mes_resta%>" />
-        <input type="hidden" id="a-resta" value="<%=anio_resta%>" />
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-			<script src="funciones.js"></script>
-
+    
+</script>
 </body>
 </html>

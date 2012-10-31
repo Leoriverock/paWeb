@@ -56,7 +56,7 @@
     
     <!-- Tray -->
     <div id="tray">
-
+           
         <ul>
             <li id="tray-active" ><a href="index.jsp">Inicio</a></li> <!-- Active page -->
             <%if(session.getAttribute("username")!=null){ %><li><a href="monedero.jsp">Usuario</a></li><%}%>
@@ -135,7 +135,7 @@
     
     </div> <!-- /tray -->
     <div id="col" class="box">
-   
+    <!--El contenido de la plantilla va de aca-->
             <form  action="Validar_editar.jsp" method="POST">
                         <table id="edita" class="table table-bordered">
                          <%if(session.getAttribute("username")!=null){
@@ -177,6 +177,7 @@
                               }      %>
                         </table> 
                        </form>
+                        <!--Fin de contenido de plantilla-->
     </div>
     <%
                         List lista = new ArrayList();

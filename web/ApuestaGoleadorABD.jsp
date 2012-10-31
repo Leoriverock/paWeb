@@ -35,5 +35,12 @@
     
     
 %> 
- <script>alert("Apuesta Concretada!");
- window.location.href='index.jsp';</script>
+ <script>
+                    function hola(){window.location.href='index.jsp';}
+                    function redir(){
+                        document.write("Apuesta realizada con éxito...redireccionando :D ")
+                        
+                        setTimeout("hola()",3000);
+                    }
+                    redir();
+                </script>
