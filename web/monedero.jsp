@@ -22,6 +22,42 @@
     <link rel="shortcut icon" href="imagenes/favicon.ico" type="image/x-icon" />
 
     <title>iBet</title>
+    
+    <%
+    ManejadorBD mbd= ManejadorBD.getInstancia();
+    String nick;
+    nick=String.valueOf(session.getAttribute("username"));    
+    double perdida=1000;
+    double ganada=1000; 
+    double ganadaesp=1000; 
+    int usuario;
+    usuario=mbd.BuscarUsuarioId(nick);
+    perdida=mbd.GraficaPerdidas(usuario); 
+    ganada=mbd.GRaficarGanadasTotal(usuario);
+    ganadaesp=mbd.GRaficarGanadasTotalEsp(usuario);                
+    %>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Grafica'],
+          ['Ganancia Real', <%=ganada%>],
+          ['Perdidas', <%=perdida%>],
+          ['Ganancia Esp', <%=ganadaesp%>],
+        ]);
+      
+        // Create and draw the visualization.
+        new google.visualization.PieChart(document.getElementById('visualization')).
+            draw(data, {title:"Grafica"});
+      }
+      
+
+      google.setOnLoadCallback(drawVisualization);
+    </script>
     </head>
     
 <body>
@@ -150,7 +186,6 @@
                                  <td>Saldo:</td>
                                  <td>
                                     <%
-                                    ManejadorBD mbd = ManejadorBD.getInstancia();
                                     ResultSet saldo = mbd.getStatement().executeQuery("select saldo from usuarios where nick='"+session.getAttribute("username")+"'"); 
                                     while(saldo.next()){
                                     out.println(saldo.getObject("saldo"));
@@ -161,8 +196,24 @@
                              <tr>
                                  <td>Agregar $ </td>
                                  <td><input type="Text" name="agregar"></td>
-                                 <tr><td><input type="submit" class="btn btn-success" value="Acreditar"></td>
-                             </tr>
+                                 <tr>
+                                     <td><input type="submit" class="btn btn-success" value="Acreditar"></td>
+                                     <td>&nbsp;&nbsp;<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Graficar</a></td>
+                                     <!-- Modal -->
+                                    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="myModalLabel">Grafica</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                        <p>Monedero</p>
+                                        <div id="visualization" style="width: 600px; height: 400px;"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </tr>
                          </table>  
                        </fieldset>
                     </form>
