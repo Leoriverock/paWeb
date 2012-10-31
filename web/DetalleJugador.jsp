@@ -160,36 +160,56 @@
     <!-- Promo -->
     <div id="col-top"></div>
     <div id="col" class="box">
-    <% if(session.getAttribute("username")!=null){
-            String apuesta= request.getParameter("plata");
-            int monto=Integer.parseInt(apuesta);
+    <table class="table table-bordered">
+                
+                        <%
+                        if(session.getAttribute("username")!=null) {
+                        out.println("<h2>Detalle del jugador</h2>");
+                        String id = request.getParameter("cod");
+                        int ID = Integer.parseInt(id);
+                        String div = request.getParameter("div");
+                        double dividendo = Double.parseDouble(div);
+                        String id_c= request.getParameter("id_comp");
+                        int id_comp= Integer.parseInt(id_c);
+                        
+                        ResultSet eq = mbd.getStatement().executeQuery("select * from jugadores j, equipos e, jugadores_equipos je where id_jugador="+ID+" and jugador="+ID+" and id_equipos=equipo");
+                        eq.next();
+                            out.println("<tr>");
+                            out.println("<td>Nombre: "+eq.getObject("j.nombre") +"</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Equipo: "+eq.getObject("e.nombre")+"</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Nombre completo: "+eq.getObject("nombrecompleto") +"</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Nacionalidad: "+eq.getObject("nacionalidad") +"</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Posicion: "+eq.getObject("posicion")+"</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Altura: "+eq.getObject("altura") +" m</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Peso: "+eq.getObject("peso") +" kg</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                            out.println("<td>Dividendo Goleador: "+dividendo+"</td>");
+                            out.println("</tr>"); 
 
-            String id_partido= request.getParameter("id_p");
-            String gl= request.getParameter("goles_local");
-            String gv= request.getParameter("goles_visita");
-            
-            ResultSet partido= mbd.getStatement().executeQuery("select * from competiciones c, equipos el,"+
-                    "equipos ev, partidos p where finalizado=0 and p.id_comp=c.id_competicion and el.id_equipos=p.equipolocal"+
-                    " and ev.id_equipos=p.equipovisita and p.id_partido="+id_partido+"");
-            partido.next();
-            
-        %>
-        <h3>Esta apostando al partido <%out.println(partido.getObject("el.nombre")+"  vs  "+partido.getObject("ev.nombre"));%></h3>
-       <div class="well">
-        <%
-            
-                out.println("Apuesta A Local</br>Dinero apostado: $"+monto+"</br>Paga: "+partido.getObject("p.div_exacto"));
-                out.println("</br>En caso de acertar usted ganaría $"+monto*partido.getDouble("p.div_exacto"));
-        %>
-        <form action="ApuestaResultadoExacto.jsp" method="post">
-            <input type="hidden" name="partido" value="<%=id_partido%>" />
-            <input type="hidden" name="monto" value="<%=monto%>" />
-            <input type="hidden" name="gl" value="<%=gl%>" />
-            <input type="hidden" name="gv" value="<%=gv%>" />
-            <br/>
-            <input type="submit" class="btn btn-success" value="Aceptar">
-        </form> <%}%>
-        </div>
+                        %>
+                </table>
+                </br>
+                <form class="form-search" action="ApuestaGoleador.jsp">
+                    <input type="hidden" value="<%=ID%>" name="id_j">
+                    <input type="hidden" value="<%=div%>" name="div">
+                    <input type="hidden" value="<%=id_comp%>" name="id_c">
+                    <label class="checkbox">$U</label>
+                    <input type="text" class="input-mini" name="monto">
+                    <input type="submit" class="btn btn-success" value="Apostar A Goleador">
+                </form> <% } %>
 </div> <!-- /main -->
 <%
 List lista = new ArrayList();

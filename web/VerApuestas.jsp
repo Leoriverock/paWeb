@@ -236,7 +236,7 @@
         </table>
         
         
-        <h3>Apuestas Resultado exacto</h3>
+        <h3>Apuestas a Goleador de Liga</h3>
         <table class="table table-striped">
             <%
             
