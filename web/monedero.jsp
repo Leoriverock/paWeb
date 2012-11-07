@@ -4,6 +4,11 @@
     Author     : Usaurio
 --%>
 
+<%@page import="java.io.OutputStream"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="javax.swing.ImageIcon"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
@@ -194,8 +199,15 @@
                                  </td>
                              </tr> 
                              <tr>
+                                 
                                  <td>Agregar $ </td>
                                  <td><input type="Text" name="agregar"></td>
+                                 <td> 
+                                   
+                                  
+                                     
+                                     
+                                     
                                  <tr>
                                      <td><input type="submit" class="btn btn-success" value="Acreditar"></td>
                                      <td>&nbsp;&nbsp;<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Graficar</a></td>

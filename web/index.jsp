@@ -45,9 +45,9 @@
 		<script type="text/javascript" language="javascript" src="jquery.js"></script>
 		<script type="text/javascript" language="javascript">
 
-			var deltaX = 1;
-			var deltaT = 90;	
-			var imageWidth = 1;
+			var deltaX = 11;
+			var deltaT = 440;	
+			var imageWidth = 2;
 
 			$(document).ready (function ()
 			{
@@ -63,16 +63,16 @@
 
 			function animate ()
 			{
-				var left = parseInt ($("#container img").css("left"));
-				left -= deltaX;
+				var pos = parseInt ($("#container img").css("left"));
+				//left -= deltaX;
 
-				if (left <= -imageWidth) //if first image is no longer visible
-				{
-					left += imageWidth;
+				//if (left <= -imageWidth) //if first image is no longer visible
+				//{
+					pos = imageWidth;
 					$("#container img:first").remove ().insertAfter("#container img:last").click (changeViewportImage);
-				}
+				//}
 
-				$("#container img").css("left", left + "px");
+				$("#container img").css("left", pos + "px");
 
 				setTimeout ("animate()", deltaT); //continue animation
 			}
@@ -212,7 +212,7 @@
 			<p><img src="Ligas/cham.png"/></p>
 			<p><img src="Ligas/ing.png"/></p>
 			<p><img src="Ligas/lib.png"/></p>
-			<p><img src="Ligas/mund.png"/></p>
+			<p><img src="Ligas/mun.png"/></p>
                         <p><img src="Ligas/uefa.png"/></p>
 			<p><img src="Ligas/nis.png"/></p>
                         <p><img src="Ligas/rey.png"/></p>
