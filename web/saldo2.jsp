@@ -8,7 +8,6 @@
 
 <%
     ManejadorBD mbd = ManejadorBD.getInstancia();   
-    
     if (request.getParameter("agregar")!=null){
         try{
             double agr= Double.parseDouble(request.getParameter("agregar"));
@@ -18,18 +17,18 @@
                 saldoAnterior= Double.parseDouble(saldoAct.getObject("saldo").toString());
             }
             
-            double nuevoSaldo=saldoAnterior+agr;
+            double nuevoSaldo=saldoAnterior-agr;
             try{
             mbd.getStatement().executeUpdate("update usuarios set saldo="+nuevoSaldo+" where nick='"+session.getAttribute("username")+"'");
             } catch (SQLException ex){
                 %><script>alert("Puto Error");
             window.location.href='index.jsp';</script><%
             }
-            %><script>alert("Se ha acreditado con exito");
+            %><script>alert("Se ha debitado con exito");
             window.location.href='index.jsp';</script><%
         }catch(Exception ex){
             %><script>alert("Error");
             window.location.href='index.jsp';</script><%
         }
-       }
+    }
 %> 

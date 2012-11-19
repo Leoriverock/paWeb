@@ -37,7 +37,9 @@
        partido.next();
        int id_c=partido.getInt("id_comp");
        
-       mbd.getStatement().executeUpdate("insert into apuestas(id_usuario, monto, tipo, id_comp, fecha, estado) values("+id_user+","+monto+", 'partido',"+id_c+",'2012-10-5','pendiente')");
+       String fecha=mbd.obtenerFechaActual();
+       
+       mbd.getStatement().executeUpdate("insert into apuestas(id_usuario, monto, tipo, id_comp, fecha, estado) values("+id_user+","+monto+", 'partido',"+id_c+",'"+fecha+"','pendiente')");
        ResultSet id_ap = mbd.getStatement().executeQuery("select MAX(id_apuesta) from apuestas");
        int id_apuest=0;
        id_ap.next();
@@ -47,7 +49,7 @@
        //id_apuest=id_ap.getInt(0);
        
        
-       mbd.getStatement().executeUpdate("insert into ap_partidos(id_partido, opcion, id_apuesta) values("+id_c+", '"+res+"',"+id_apuest+")");
+       mbd.getStatement().executeUpdate("insert into ap_partidos(id_partido, opcion, id_apuesta) values("+id_p+", '"+res+"',"+id_apuest+")");
        mbd.getStatement().executeUpdate("update usuarios set saldo=(saldo-"+monto+") where nick='"+session.getAttribute("username")+"' ");
     
                     %>

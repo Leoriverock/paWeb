@@ -20,11 +20,7 @@
     </head>
     
 <body>
-    <% if(session.getAttribute("username")==null){ %>
-    <div class="alert alert-error">
-        <span>Error: </span>debe autenticarse primero.
-    </div>
-   <% }%>
+    
 <div id="main">
 
     <!-- Header -->
@@ -135,17 +131,25 @@
     
     </div> <!-- /tray -->
     <div id="col" class="box">
-        <h3>Últimos partidos jugados...</h3>
-        <table class="table table-bordered">
+        <h3>Últimos 10 partidos jugados...</h3>
+        <table class="table table-bordered ">
+            <tr>
+                <td class="btn-success"><B>Id Partido</b></td>
+                 <td class="btn-success"><B>Local</B></td>
+                  <td class="btn-success"><B>Visitante</B></td>
+            </tr>
             <%
+            
             ManejadorBD mbd = ManejadorBD.getInstancia();
-            ResultSet partido = mbd.getStatement().executeQuery("select * from partidos p where p.finalizado=1 order by p.fecha desc limit 10");
+            ResultSet partido = mbd.getStatement().executeQuery("select p.id_partido, e.nombre, e1.nombre from equipos e, equipos e1, partidos p where finalizado = 1 and p.equipolocal = e.id_equipos and p.equipovisita=e1.id_equipos or p.equipolocal = e1.id_equipos and p.equipovisita=e.id_equipos order by fecha desc limit 10");
             while (partido.next()){
             out.println("<tr>");
-            out.println("<td><a href=VerDetalleEquipo.jsp?cod="+1+">"+partido.getObject("id_partido") +"</a></td>");
+            out.println("<td><a href=VerDetalleEquipo.jsp?cod="+1+">"+partido.getObject("id_partido")+"</a></td>");
+            out.println("<td>"+partido.getObject("e.nombre")+"</td>");
+            out.println("<td>"+partido.getObject("e1.nombre") +"</td>");
             out.println("</tr>");
-
             }
+                       
 
             %>   
             

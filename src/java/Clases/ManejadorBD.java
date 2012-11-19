@@ -1,6 +1,8 @@
 package Clases;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -645,5 +647,195 @@ public class ManejadorBD {
             return false;
         }
          
+    }
+    
+    public String obtenerFechaActual(){
+        
+        Calendar actual = new GregorianCalendar();
+        ManejadorBD Li=ManejadorBD.getInstancia();
+        
+        List Lista= new ArrayList();
+        Lista=Li.ObtenerFechaHora();
+        
+        int dia_resta=Integer.valueOf(Lista.get(0).toString());
+        int mes_resta=Integer.valueOf(Lista.get(1).toString());
+        int anio_resta=Integer.valueOf(Lista.get(2).toString());
+        int hora_resta=Integer.valueOf(Lista.get(3).toString());
+        int min_resta=Integer.valueOf(Lista.get(4).toString());
+        
+        int dia = actual.get(Calendar.DAY_OF_MONTH) + dia_resta;
+        int mes = actual.get(Calendar.MONTH) + mes_resta + 1;
+        int anio = actual.get(Calendar.YEAR) + anio_resta;
+        int hora = actual.get(Calendar.HOUR_OF_DAY) + hora_resta;
+        int min = actual.get(Calendar.MINUTE) + min_resta;
+        
+        if(min<0)
+        {
+            min=min+60;
+            hora=hora-1;
+        } else if (min>59){
+            min=min-60;
+            hora=hora+1;
+            }
+        
+        if(hora<0)
+        {
+            dia=dia-1;
+            hora=hora+24;
+        } else if (hora>23){
+            hora=hora-24;
+            dia=dia+1;
+            }
+        
+        if(dia<1)
+        {
+            mes=mes-1;
+            if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12)
+            {
+                dia=dia+31;
+            }
+            if(mes==2)
+            {
+                dia=dia+29;
+            }
+            if(mes==4 || mes==6 || mes==9 || mes==11)
+            {
+                dia=dia+30;
+            }
+        } else if (dia>28){
+            if (mes==2){
+                if (!((anio % 4 == 0) && ((anio % 100 != 0) || (anio % 400 == 0)))){
+                        dia=dia-28;
+                        mes=mes+1;
+                    } else if (dia>29){
+                        dia=dia-29;
+                        mes=mes+1;
+                        }
+                } else if((dia>30) && (mes==4 || mes==6 || mes==9 || mes==11)){
+                        dia=dia-30;
+                        mes=mes+1;
+                    } else if (dia>31){
+                            dia=dia-31;
+                            mes=mes+1;
+                        }
+            }
+        if(mes<1)
+        {
+            mes=mes+12;
+            anio=anio-1;
+        } else if (mes>12){
+            mes=mes-12;
+            anio=anio+1;
+        }
+        String diaa=dia+"", mess=mes+"", anioo=anio+"";
+        if (dia<10){
+            diaa="0"+diaa;
+        }
+        if (mes<10){
+            mess="0"+mess;
+        }
+        
+        String s_fecha = anioo+mess+diaa;
+        return s_fecha;
+    }
+    public String obtenerHoraActual(){
+        
+        Calendar actual = new GregorianCalendar();
+        ManejadorBD Li=ManejadorBD.getInstancia();
+        
+        List Lista= new ArrayList();
+        Lista=Li.ObtenerFechaHora();
+        
+        int dia_resta=Integer.valueOf(Lista.get(0).toString());
+        int mes_resta=Integer.valueOf(Lista.get(1).toString());
+        int anio_resta=Integer.valueOf(Lista.get(2).toString());
+        int hora_resta=Integer.valueOf(Lista.get(3).toString());
+        int min_resta=Integer.valueOf(Lista.get(4).toString());
+        
+        int dia = actual.get(Calendar.DAY_OF_MONTH) + dia_resta;
+        int mes = actual.get(Calendar.MONTH) + mes_resta + 1;
+        int anio = actual.get(Calendar.YEAR) + anio_resta;
+        int hora = actual.get(Calendar.HOUR_OF_DAY) + hora_resta;
+        int min = actual.get(Calendar.MINUTE) + min_resta;
+        
+        if(min<0)
+        {
+            min=min+60;
+            hora=hora-1;
+        } else if (min>59){
+            min=min-60;
+            hora=hora+1;
+            }
+        
+        if(hora<0)
+        {
+            dia=dia-1;
+            hora=hora+24;
+        } else if (hora>23){
+            hora=hora-24;
+            dia=dia+1;
+            }
+        
+        if(dia<1)
+        {
+            mes=mes-1;
+            if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12)
+            {
+                dia=dia+31;
+            }
+            if(mes==2)
+            {
+                dia=dia+29;
+            }
+            if(mes==4 || mes==6 || mes==9 || mes==11)
+            {
+                dia=dia+30;
+            }
+        } else if (dia>28){
+            if (mes==2){
+                if (!((anio % 4 == 0) && ((anio % 100 != 0) || (anio % 400 == 0)))){
+                        dia=dia-28;
+                        mes=mes+1;
+                    } else if (dia>29){
+                        dia=dia-29;
+                        mes=mes+1;
+                        }
+                } else if((dia>30) && (mes==4 || mes==6 || mes==9 || mes==11)){
+                        dia=dia-30;
+                        mes=mes+1;
+                    } else if (dia>31){
+                            dia=dia-31;
+                            mes=mes+1;
+                        }
+            }
+        if(mes<1)
+        {
+            mes=mes+12;
+            anio=anio-1;
+        } else if (mes>12){
+            mes=mes-12;
+            anio=anio+1;
+        }
+        String diaa=dia+"", mess=mes+"", anioo=anio+"";
+        if (dia<10){
+            diaa="0"+diaa;
+        }
+        if (mes<10){
+            mess="0"+mess;
+        }
+        
+        return construirHora(hora, min);
+        
+    }
+    
+    public String construirHora(int h, int m){
+        String H = ""+h, M = ""+m;
+        if(h < 10){
+            H = "0"+h;
+        }
+        if(m < 10){
+            M = "0"+m;
+        }
+        return (H+M+"00");
     }
 }

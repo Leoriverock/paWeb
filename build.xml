@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="PAweb-22-10" default="default" basedir=".">
-    <description>Builds, tests, and runs the project PAweb-22-10.</description>
+<project name="tarea4-nov10" default="default" basedir=".">
+    <description>Builds, tests, and runs the project tarea4-nov10.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

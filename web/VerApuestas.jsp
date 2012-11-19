@@ -269,7 +269,38 @@
             }
             %>
         </table>
-
+        <h3>Apuestas Campeon</h3>
+        <table class="table table-striped">
+            <%
+            //ManejadorBD mbd = ManejadorBD.getInstancia();
+            ResultSet apuesta = mbd.getStatement().executeQuery("select * from apuestas a, liga_equipo d, "
+                    +"usuarios u, ap_campeon ac, competiciones c, equipos e where a.id_apuesta=ac.id_apuesta and "
+                    +"d.id_liga=c.id_competicion and d.id_equipo=ac.id_equipo and u.nick='"+session.getAttribute("username")+"' "
+                    +"and u.id_user=a.id_usuario and a.id_comp=c.id_competicion and ac.id_equipo=e.id_equipos order by a.fecha desc");
+            out.println("<tr>");
+            out.println("<td><a>Evento</a></td>");
+            out.println("<td><a>Tipo Apuesta</a></td>");
+            out.println("<td><a>Realizada</a></td>");
+            out.println("<td><a>Apuesta por</a></td>");
+            out.println("<td><a>Apostado</a></td>");
+            out.println("<td><a>Dividendo</a></td>");
+            out.println("<td><a>Ganará</a></td>");
+            out.println("<td><a>Estado</a></td>");
+            out.println("</tr>");
+            while(apuesta.next()){
+                out.println("<tr>");
+                out.println("<td><a>"+apuesta.getObject("c.nombre") +"</a></td>");
+                out.println("<td><a>"+apuesta.getObject("a.tipo")+"</a></td>");
+                out.println("<td><a>"+apuesta.getObject("a.fecha")+"</a></td>");
+                out.println("<td><a>"+apuesta.getObject("e.nombre")+"</a></td>");
+                out.println("<td><a> $ "+apuesta.getObject("a.monto")+"</a></td>");
+                out.println("<td><a>"+apuesta.getDouble("d.dividendo") +"</a></td>");
+                out.println("<td><a> $ "+apuesta.getInt("a.monto")*apuesta.getDouble("d.dividendo") +"</a></td>");
+                out.println("<td><a>"+apuesta.getObject("a.estado") +"</a></td>");
+                out.println("</tr>");
+            }
+            %>
+        </table>
 </div> <!-- /main -->
 <%
 List lista = new ArrayList();
@@ -409,3 +440,4 @@ registro(ip2,so2,cliente2,fecha);
 </script>
 </body>
 </html>
+

@@ -182,35 +182,10 @@
      <div id="col" class="box">
    
            <h4>En este espacio usted podra aumentar el saldo de su monedero</h1>
-                    <form class="well" action="saldo.jsp" method="POST">
+                    <form class="well" name="algo"  method="POST">
                         <fieldset class="Inicio de Sesion">
                             <legend><b>Monedero</b></legend>
-
-                         <table>         
-                             <tr>
-                                 <td>Saldo:</td>
-                                 <td>
-                                    <%
-                                    ResultSet saldo = mbd.getStatement().executeQuery("select saldo from usuarios where nick='"+session.getAttribute("username")+"'"); 
-                                    while(saldo.next()){
-                                    out.println(saldo.getObject("saldo"));
-                                    }
-                                    %>
-                                 </td>
-                             </tr> 
-                             <tr>
-                                 
-                                 <td>Agregar $ </td>
-                                 <td><input type="Text" name="agregar"></td>
-                                 <td> 
-                                   
-                                  
-                                     
-                                     
-                                     
-                                 <tr>
-                                     <td><input type="submit" class="btn btn-success" value="Acreditar"></td>
-                                     <td>&nbsp;&nbsp;<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Graficar</a></td>
+                            &nbsp;&nbsp;<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Graficar</a>
                                      <!-- Modal -->
                                     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-header">
@@ -225,6 +200,26 @@
                                         <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Cerrar</button>
                                         </div>
                                     </div>
+
+                         <table  class="table table-striped" >  
+                              <tr><td><img src="imagenes/pypal.jpg" alt="Paypal"></td></tr>
+                             <tr>
+                                 <td>Saldo:  
+                                    <%
+                                    ResultSet saldo = mbd.getStatement().executeQuery("select saldo from usuarios where nick='"+session.getAttribute("username")+"'"); 
+                                    while(saldo.next()){
+                                    out.println(saldo.getObject("saldo"));
+                                    }
+                                    %>
+                                 </td>
+                             </tr> 
+                             <tr>
+                                 
+                                 <td>Monto u$s  <input type="Text" name="agregar"></td>
+                             <tr>
+                                     <td><input type="submit" class="btn btn-success" onclick = "this.form.action = 'saldo.jsp'" name ="acreditar" value="Acreditar">
+                                     <input type="submit" class="btn btn-warning"  onclick = "this.form.action = 'saldo2.jsp'" value="debitar"></td>
+                                     
                                 </tr>
                          </table>  
                        </fieldset>

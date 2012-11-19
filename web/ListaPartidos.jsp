@@ -159,19 +159,20 @@
     <div id="col" class="box">
     <h3>Aquí usted podrá apostar el resultado de un partido...</h3>
         <!--Tipo de clase para tabla--><table class="table table-striped" border="1">
-            <tr>
-                <td>Local</td><td></td><td>Visitante</td><td>Competición</td>
-                <td>1</td><td>X</td><td>2</td>
+            <tr >
+                <td class="btn-success">Fecha</td><td class="btn-success">Local</td><td class="btn-success"></td><td class="btn-success">Visitante</td><td class="btn-success">Competición</td>
+                <td class="btn-success">L</td><td class="btn-success">E</td><td class="btn-success">V</td>
             </tr>
 
                 <%
                     
                     ResultSet partido= mbd.getStatement().executeQuery("select * from competiciones c, equipos el,"+
                     "equipos ev, partidos p where finalizado=0 and p.id_comp=c.id_competicion and el.id_equipos=p.equipolocal"+
-                    " and ev.id_equipos=p.equipovisita");
+                    " and p.fecha is not null and p.divlocal<>0 and ev.id_equipos=p.equipovisita");
                     while (partido.next())
                     {
                        out.println("<tr>");
+                       out.println("<td><a>"+partido.getObject("p.fecha")+" "+partido.getObject("p.hora") +"</a></td>");
                        out.println("<td><a>"+partido.getObject("el.nombre") +"</a></td>");
                        out.println("<td><a><center>vs</center></a></td>");
                        out.println("<td><a>"+partido.getObject("ev.nombre") +"</a></td>");
